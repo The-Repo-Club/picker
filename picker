@@ -212,7 +212,7 @@ curlyq() {
     offline='1'
     echo -e "${COLOR7}:: ${COLOR1}No internet connection${ENDCOLOR}"
   elif [ $1 -ne 0 -a $1 -ne 7 -a $1 -ne 22 ]; then
-    echo -e "${COLOR6}notice:${ENDCOLOR} curl exited with code $1 on $2"
+    echo -e "${COLOR7}notice:${ENDCOLOR} curl exited with code $1 on $2"
     if deptest man; then
       curlman=$(man curl | sed '1,/^EXIT CODES/d' | grep " $1 ")
       curlman=$(echo "$curlman" | awk -F "    " '{print $3}' | sed 's/^[ \t]*//')
@@ -771,7 +771,7 @@ buildinstall() {
     [[ $buildonly = 1 ]] && bundle+=("$3")
     [[ $buildonly = 1 ]] && purgedeps+=("$1")
   elif [[ $2 = explicit ]]; then
-    [[ $buildonly = 1 ]] && echo -e "${COLOR6}notice:${ENDCOLOR} $1 built -- not installing"
+    [[ $buildonly = 1 ]] && echo -e "${COLOR7}notice:${ENDCOLOR} $1 built -- not installing"
     [[ $buildonly = 1 ]] && bundle+=("$3")
     [[ $buildonly != 1 ]] && progress "Installing ${pkgnum}/${totalcount} $1"
     [[ $buildonly != 1 ]] && runasroot $PACMAN ${PACOPTS[@]} -U "$3"
@@ -826,7 +826,7 @@ cacheinstall() {
      offlinemsg="${COLOR4} offline${ENDCOLOR}"
   fi
 
-  echo -e "${COLOR6}notice:${ENDCOLOR}${offlinemsg} installing $pkgrelease from cache"
+  echo -e "${COLOR7}notice:${ENDCOLOR}${offlinemsg} installing $pkgrelease from cache"
   remains=(${remains[@]/$1/})
   buildinstall $1 $2 $3
 }
@@ -841,7 +841,7 @@ checkpgpkeys() {
 
 # Prompt to import PGP keys ($@ is ${validpgpkeys[@]})
 askpgpkeys() {
-  echo -e "\n${COLOR6}warning:${ENDCOLOR} One or more PGP signatures unknown"
+  echo -e "\n${COLOR7}warning:${ENDCOLOR} One or more PGP signatures unknown"
   for pgpkey in $@; do
     echo -e "\t${COLOR7}${pgpkey}${ENDCOLOR}"
   done
@@ -899,7 +899,7 @@ checkumask() {
   if [[ $otherbits != "rx" ]]; then
     mask=$(umask 2>/dev/null)
     if [[ $mask != *022 ]]; then
-      echo -e "${COLOR6}warning:${ENDCOLOR} umask set to ${COLOR4}${mask}${ENDCOLOR} (should be 022)"
+      echo -e "${COLOR7}warning:${ENDCOLOR} umask set to ${COLOR4}${mask}${ENDCOLOR} (should be 022)"
     fi
     rmdir "$1"
     err "${COLOR7}error:${COLOR1} no write permission in ${1}${ENDCOLOR}"
@@ -913,7 +913,7 @@ checkcapacity() {
     echo -e "${COLOR7}error:${COLOR1} no free space in ${1}${ENDCOLOR}"
     [[ "$warn" == 1 ]] || exit 7
   elif [[ $capacity -gt 90 ]]; then
-    echo -e "${COLOR6}warning:${ENDCOLOR} low disk space in ${1} (tmpfs)"
+    echo -e "${COLOR7}warning:${ENDCOLOR} low disk space in ${1} (tmpfs)"
   fi
 }
 
@@ -989,7 +989,7 @@ aurmakepkg() {
   arch=($(pkgbuildgrep arch));
   if [[ ! " ${arch[@]} " =~ " any " ]]; then
     if [[ ! " ${arch[@]} " =~ " ${CARCH} " ]]; then
-      echo -e "${COLOR6}warning:$ENDCOLOR $CARCH missing from arch array"
+      echo -e "${COLOR7}warning:$ENDCOLOR $CARCH missing from arch array"
     fi
   fi
 
@@ -1189,10 +1189,10 @@ installhandling() {
       if ! aurversionisnewer "$pkg" "$localversion"; then
         if [ "$needed" = "1" ]; then
           [[ $localinstall ]] ||
-          echo -e "${COLOR6}notice:$ENDCOLOR $pkg-$localversion is up to date -- skipping"
+          echo -e "${COLOR7}notice:$ENDCOLOR $pkg-$localversion is up to date -- skipping"
           aurtargets=(${aurtargets[@]/$pkg/});
         else
-          echo -e "${COLOR6}warning:$ENDCOLOR $pkg-$localversion is up to date -- reinstalling"
+          echo -e "${COLOR7}warning:$ENDCOLOR $pkg-$localversion is up to date -- reinstalling"
         fi
       fi
     fi
@@ -1201,7 +1201,7 @@ installhandling() {
   # Echo warning if packages are out of date
   for pkg in "${aurtargets[@]}" "${aurdepends[@]}"; do
     if isoutofdate "$pkg"; then
-      echo -e "${COLOR6}warning:$ENDCOLOR $pkg is flagged out of date"
+      echo -e "${COLOR7}warning:$ENDCOLOR $pkg is flagged out of date"
     fi
   done
     
@@ -1500,7 +1500,7 @@ if [[ $option = install ]]; then
       true
     elif [[ "$pkg" != "$regexmatch" ]]; then
       regex='1'
-      echo -e "${COLOR6}notice:${ENDCOLOR} enabling regex mode ($pkg)"
+      echo -e "${COLOR7}notice:${ENDCOLOR} enabling regex mode ($pkg)"
     fi
   done
   installhandling "${packageargs[@]}"
@@ -1587,7 +1587,7 @@ if [[ $option = update ]]; then
   # Check and output ignored package update info
   for package in "${checkignores[@]}"; do
     if aurversionisnewer "${package%% *}" "${package##* }"; then
-      echo -e "${COLOR6}warning:${ENDCOLOR} ${package%% *}: ignoring package upgrade (${package##* } => $aurversion)"
+      echo -e "${COLOR7}warning:${ENDCOLOR} ${package%% *}: ignoring package upgrade (${package##* } => $aurversion)"
     fi
   done
 
@@ -1628,7 +1628,7 @@ if [[ $option = download ]]; then
     fi
   done
 
-  [[ $abslist ]] && echo -e "${COLOR6}notice:$ENDCOLOR sourcing from ${COLOR4}[ABS]$ENDCOLOR"
+  [[ $abslist ]] && echo -e "${COLOR7}notice:$ENDCOLOR sourcing from ${COLOR4}[ABS]$ENDCOLOR"
   for package in "${abslist[@]}"; do
     pkgrepo=$(absrepo "$package")
     abslink "$pkgrepo" "$package"
@@ -1642,7 +1642,7 @@ if [[ $option = download ]]; then
     fi
   done
 
-  [[ $pkglist ]] && echo -e "${COLOR6}notice:$ENDCOLOR sourcing from ${COLOR3}[AUR]$ENDCOLOR"
+  [[ $pkglist ]] && echo -e "${COLOR7}notice:$ENDCOLOR sourcing from ${COLOR3}[AUR]$ENDCOLOR"
   for package in "${pkglist[@]}"; do
     if [[ $package = *~ ]]; then
       pkgname="${package%\~}"
@@ -1713,7 +1713,7 @@ if [[ $option = search || $option = searchinstall ]]; then
     for ((i=1 ; i<${#packageargs[@]} ; i++)); do
       regexmatch="$(echo ${packageargs[$i]} | tr -dc $valid_pkgname)"
       if [[ ${packageargs[$i]} != $regexmatch ]]; then
-        echo -e "${COLOR6}notice:${ENDCOLOR} enabling regex mode (${packageargs[$i]})"
+        echo -e "${COLOR7}notice:${ENDCOLOR} enabling regex mode (${packageargs[$i]})"
         grep --color=always -G "${packageargs[$i]}" "$tmpdir/search.results" > "$tmpdir/search.results-2"
       else
         grep -xFf "$tmpdir/search.results" "$tmpdir/${packageargs[$i]}.search" > "$tmpdir/search.results-2"
@@ -1835,7 +1835,7 @@ if [[ $option = info ]]; then
       echo -e "${COLOR1}Name              : $pkgname"
       echo -e "${COLOR1}Version           : ${COLOR2}$pkgver-$pkgrel"
       echo -e "${COLOR1}URL               : ${COLOR4}$url"
-      echo -e "${COLOR1}Licenses          : ${ENDCOLOR}${license[@]:-Unlicense}"
+      echo -e "${COLOR}Licenses          : ${ENDCOLOR}${license[@]:-Unlicense}"
       echo -e "${COLOR1}Groups            : ${ENDCOLOR}${groups[@]:-None}"
       echo -e "${COLOR1}Provides          : ${ENDCOLOR}${provides[@]:-None}"
       echo -e "${COLOR1}Depends On        : ${ENDCOLOR}${depends[@]:-None}"
