@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ######################################################################
 # picker - A bach AUR wrapper
 version="2020.12.28"
