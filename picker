@@ -102,9 +102,10 @@ version() {
   pacver=$($pacmanbin -V 2>/dev/null | grep -o "Pacman v.*")
   echo "   ===   =   =  =====     picker v${version} - A bach AUR wrapper"
   echo "  =   =  =   =  =   =     ${pacver}"
-  echo '  =====  =   =  ===='
-  echo '  =   =  =   =  =   =     This program may be freely redistributed under'
-  echo '  =   =   ===   =   =     the terms of the GNU General Public License.'
+  echo "  =====  =   =  ===="
+  echo "  =   =  =   =  =   =     This program may be freely redistributed under"
+  echo "  =   =   ===   =   =     the terms of the Attribution NonCommercial"
+  echo "                          ShareAlike 4.0 International License."
   exit
 }
 
