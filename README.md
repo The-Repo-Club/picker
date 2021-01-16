@@ -1,4 +1,4 @@
-Packer
+Picker
 ======
 
 Packer is a bash wrapper for pacman and the AUR\ & 
