@@ -153,7 +153,6 @@ usage() {
   echo '    --quickcheck - check for updates and exit'
   echo '    --force      - force install packages'
   echo '    --quiet      - only output package name for searches'
-  echo '    --clean      - clean packages no longer needed'
   echo '    --savedir    - takes a path as the cache directory'
   echo '    --skipcache  - skips check for pre-built package in cache directory'
   echo '    --skipinteg  - when using makepkg, do not check md5s'
