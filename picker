@@ -1315,7 +1315,7 @@ run_quick_check() {
 
 run_clean() {
   for p in $($pacmanbin -Qtdq); do
-    $($pacmanbin -Rs $p)
+    fakeroot $pacmanbin -Rs $p
   done
 }
 
