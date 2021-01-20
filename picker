@@ -119,7 +119,7 @@ usage() {
   echo '    -Ss|-Ssq     - searches for package'
   echo '    -Si          - outputs info for package'
   echo '    -G           - download and extract aur tarball only'
-  echo '    -A            - when using makepkg, ignores missing or incomplete arch field in the build script'
+  echo '    -A           - when using makepkg, ignores missing or incomplete arch field in the build script'
   echo '    -L           - list installed packages by size'
   echo '    -P           - passthrough for pkgfile command'
   echo
