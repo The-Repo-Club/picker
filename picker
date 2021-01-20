@@ -153,12 +153,14 @@ usage() {
   echo '    --quickcheck - check for updates and exit'
   echo '    --force      - force install packages'
   echo '    --quiet      - only output package name for searches'
+  echo '    --clean      - clean packages no longer needed'
   echo '    --savedir    - takes a path as the cache directory'
   echo '    --skipcache  - skips check for pre-built package in cache directory'
   echo '    --skipinteg  - when using makepkg, do not check md5s'
   echo '    --skiptest   - when using makepkg, do not parse check() test deps'
   echo '    --testing    - for unit testing purposes only'
   echo '    --warn       - treat errors as non-fatal warnings'
+  echo '    -c           - clean packages no longer needed'
   echo '    -v           - turns on verbose output'
   echo '    -V           - display version'
   echo '    -h           - outputs this message'
@@ -1311,6 +1313,12 @@ run_quick_check() {
   $pacmanbin -Qqu --dbpath "$CHECKUPDATE_DB" 2> /dev/null 
 }
 
+run_clean() {
+  for p in $($pacmanbin -Qtdq); do
+    $($pacmanbin -Rs $p)
+  done
+}
+
 # proceed with installation prompt
 proceed() {
   read
@@ -1428,6 +1436,7 @@ while [[ $1 ]]; do
     '--skiptest') skiptest='1' ; MAKEPKGOPTS+=("--nocheck");;
     '--testing') testing='1' ; enabletesting ;;
     '--warn') warn='1' ;;
+    '-c'|'--clean') clean='1' ;;
     '-h'|'--help') usage ;;
     '-v'|'--verbose') verbose='1' ;;
     '-V'|'--version') version ;;
@@ -1469,6 +1478,12 @@ makearch=$(grep ^CARCH= "$makepkgconf" 2>/dev/null | grep -o -e =.*[0-9A-Za-z] |
 # Check for new packages
 if [[ $quickcheck == 1 ]]; then
   run_quick_check
+  exit
+fi
+
+# Clean old packages
+if [[ $clean == 1 ]]; then
+  run_clean
   exit
 fi
 
