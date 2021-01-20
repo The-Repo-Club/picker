@@ -1318,7 +1318,7 @@ run_clean() {
   for p in $($pacmanbin -Qtdq); do
     cleanPackages+=($($p))
   done
-  echo $cleanPackages
+  echo "$cleanPackages"
 }
 
 # proceed with installation prompt
