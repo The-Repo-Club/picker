@@ -1318,7 +1318,7 @@ run_clean() {
   for p in $($pacmanbin -Qtdq); do
     cleanPackages+="$cleanPackages = $p"
   done
-  fakeroot $pacmanbin -Rs $cleanPackages
+  runasroot $pacmanbin -Rs $cleanPackages
 }
 
 # proceed with installation prompt
