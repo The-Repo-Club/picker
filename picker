@@ -1316,7 +1316,7 @@ run_quick_check() {
 run_clean() {
   cleanPackages=()
   for p in $($pacmanbin -Qtdq); do
-    cleanPackages+="$cleanPackages = $p"
+    cleanPackages+="$p "
   done
   runasroot $pacmanbin -Rs $cleanPackages
 }
