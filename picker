@@ -1317,7 +1317,11 @@ run_clean() {
   for p in $($pacmanbin -Qtdq); do
     cleanPackages+="$p "
   done
-  runasroot $pacmanbin -Rs $cleanPackages
+  if [[ ! -z "$cleanPackages" ]]; then
+    runasroot $pacmanbin -Rsn $cleanPackages
+  else
+    echo -e "${COLOR3}notice:${ENDCOLOR} No unused dependencies found!"
+  fi
 }
 
 # proceed with installation prompt
