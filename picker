@@ -1318,7 +1318,7 @@ run_clean() {
     cleanPackages+="$p "
   done
   if [[ ! -z "$cleanPackages" ]]; then
-    runasroot $pacmanbin -Rsn $cleanPackages
+    runasroot $pacmanbin -Rsnc $cleanPackages
   else
     echo -e "${COLOR3}notice:${ENDCOLOR} No unused dependencies found!"
   fi
