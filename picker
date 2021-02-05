@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ######################################################################
 # picker - A bach AUR wrapper
-version="2020.12.28"
+version="2021.02.05"
 # Copyright TheCynicalTeam <wayne6324@gmail.com>
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,11 +200,9 @@ runasroot() {
     fakeroot "$@" || code='10'
   elif [[ $UID -eq 0 ]]; then
     "$@" || code='11'
-  elif sudo -v &>/dev/null && sudo -l "$@" &>/dev/null; then
-    sudo -E "$@" || code='12'
   else
-    echo -n "root "
-    su -c "$(printf '%q ' "$@")" || code='13'
+    echo -n "picker ($USER@$HOSTNAME) "
+    su -c "$(printf '%q ' "$@")" || code='12'
   fi
 }
 
